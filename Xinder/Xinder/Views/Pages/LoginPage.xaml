@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:magic="clr-namespace:MagicGradients;assembly=MagicGradients"
+             xmlns:renderers="clr-namespace:Xinder.Renderers"
+             xmlns:resources="clr-namespace:Xinder.Resources;assembly=Xinder"
+             x:Class="Xinder.Views.LoginPage">
+    <ContentPage.Content>
+        <Grid>
+            <magic:GradientView VerticalOptions="FillAndExpand">
+                <magic:GradientView.GradientSource>
+                    <magic:LinearGradient Angle="45">
+                        <magic:GradientStop Color="{StaticResource AppColor1}" Offset="0" />
+                        <magic:GradientStop Color="{StaticResource AppColor2}" Offset="1" />
+                    </magic:LinearGradient>
+                </magic:GradientView.GradientSource>
+            </magic:GradientView>
+            <Grid Margin="20,0" 
+                  RowDefinitions="*, 4*">
+                <StackLayout Grid.Row="1">
+                    <Label 
+                       Text="{x:Static resources:AppResources.AppTitle}"
+                       Style="{StaticResource TitleLabel}"/>
+                    <Frame 
+                        Style="{StaticResource EntryFrame}">
+                        <renderers:BorderlessEntry Placeholder="{x:Static resources:AppResources.Email}"
+                               Text="{Binding Email}"
+                               Keyboard="Email"
+                               Style="{StaticResource LoginPageEntry}"
+                               Completed="LoginEntryCompleted"/>
+                    </Frame>
+                    <Frame 
+                        Style="{StaticResource EntryFrame}">
+                        <renderers:BorderlessEntry x:Name="PasswordEntry"
+                               Placeholder="{x:Static resources:AppResources.Password}"
+                               Text="{Binding Password}"
+                               Style="{StaticResource LoginPageEntry}"                  
+                               IsPassword="True"
+                               Completed="PasswordEntryCompleted"/>
+                    </Frame>
+                    <Frame 
+                        Style="{StaticResource EntryFrame}"
+                        Padding="0"
+                        Margin="0,40">
+                        <Button
+                        Style="{StaticResource LoginButton}"
+                        Text="{x:Static resources:AppResources.LogIn}"
+                        Command="{Binding LoginCommand}" />
+                    </Frame>
+                </StackLayout>
+            </Grid>
+            <ActivityIndicator VerticalOptions="Center"
+                               HorizontalOptions="Center"
+                               IsRunning="{Binding ActivityIndicatorRunning}"
+                               Color="{StaticResource AppColor1}" />
+            <StackLayout VerticalOptions="FillAndExpand"
+                         HorizontalOptions="FillAndExpand"
+                         BackgroundColor="White" 
+                         Opacity="0.3"
+                         IsVisible="{Binding ActivityIndicatorRunning}"/>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

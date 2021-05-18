@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:swipecardview="clr-namespace:MLToolkit.Forms.SwipeCardView;assembly=MLToolkit.Forms.SwipeCardView" xmlns:magic="http://magic.com/schemas/gradients"
+             xmlns:resources="clr-namespace:Xinder.Resources;assembly=Xinder"
+             xmlns:converters="clr-namespace:Xinder.Converters"
+             x:Class="Xinder.Views.HomePage"
+             NavigationPage.HasNavigationBar="False">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:BoolToOpacityConverter
+                x:Key="BoolToOpacityConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <Grid>
+            <magic:GradientView VerticalOptions="FillAndExpand">
+                <magic:GradientView.GradientSource>
+                    <magic:LinearGradient Angle="45">
+                        <magic:GradientStop Color="#FF655B" Offset="0" />
+                        <magic:GradientStop Color="#fe3c72" Offset="1" />
+                    </magic:LinearGradient>
+                </magic:GradientView.GradientSource>
+            </magic:GradientView>
+            <StackLayout>
+                <swipecardview:SwipeCardView
+                x:Name="SwipeView" 
+                ItemsSource="{Binding Users}"
+                Opacity="{Binding LookingForNewPeople, Converter={StaticResource BoolToOpacityConverter}}"
+                Dragging="OnDragging"
+                Swiped="OnSwiped"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="FillAndExpand"
+                Padding="20,20,20,0"
+                SupportedSwipeDirections="Left,Right"
+                SupportedDraggingDirections="Left,Right">
+                    <swipecardview:SwipeCardView.ItemTemplate>
+                        <DataTemplate>
+                            <StackLayout>
+                                <Frame
+                                HorizontalOptions="FillAndExpand"
+                                VerticalOptions="FillAndExpand"
+                                Padding="0"
+                                IsClippedToBounds="True"
+                                CornerRadius="15">
+                                    <Grid RowDefinitions="*, auto">
+                                        <Image 
+                                        Grid.Row="0"
+                                        Grid.RowSpan="2"
+                                        Source="{Binding Avatar}"
+                                        Aspect="AspectFill" />
+                                        <Frame  x:Name="LikeFrame"
+                                            Grid.Row="0"
+                                            Grid.RowSpan="2"
+                                            Style="{StaticResource LikeNopeFrame}"
+                                            Opacity="0"
+                                            HorizontalOptions="StartAndExpand"
+                                            BorderColor="Green"
+                                            Rotation="-25">
+                                            <Label Text="LIKE"
+                                               Style="{StaticResource LikeNopeLabel}"
+                                               TextColor="Green" />
+                                        </Frame>
+                                        <Frame  x:Name="NopeFrame"
+                                            Grid.Row="0"
+                                            Grid.RowSpan="2"
+                                            Style="{StaticResource LikeNopeFrame}"
+                                            Opacity="0"
+                                            HorizontalOptions="EndAndExpand"
+                                            BorderColor="red"
+                                            Rotation="25">
+                                            <Label Text="NOPE"
+                                               Style="{StaticResource LikeNopeLabel}"
+                                               TextColor="red" />
+                                        </Frame>
+                                        <StackLayout Grid.Row="1"
+                                           Padding="8">
+                                            <Label>
+                                                <Label.FormattedText>
+                                                    <FormattedString>
+                                                        <Span Text="{Binding FirstName}"
+                                                              Style="{StaticResource NameLabel}"/>
+                                                        <Span Text="   "/>
+                                                        <Span Text="{Binding LastName}"
+                                                              Style="{StaticResource NameLabel}"/>
+                                                    </FormattedString>
+                                                </Label.FormattedText>
+                                            </Label>
+                                            <Label 
+                                           Text="{Binding Description}"
+                                           Style="{StaticResource DescLabel}"/>
+                                        </StackLayout>
+                                    </Grid>
+                                </Frame>
+                            </StackLayout>
+                        </DataTemplate>
+                    </swipecardview:SwipeCardView.ItemTemplate>
+                </swipecardview:SwipeCardView>
+                <StackLayout
+                Orientation="Horizontal" 
+                HorizontalOptions="Center"
+                Padding="55,25"
+                Spacing="80">
+                    <Button x:Name="NopeButton"
+                        Clicked="OnNopeClicked"
+                        Style="{StaticResource IconButton}"
+                        Text="&#10060;"
+                        FontSize="28"
+                        BorderColor="Red"/>
+                    <Button x:Name="LikeButton"
+                        Clicked="OnLikeClicked"
+                        Style="{StaticResource IconButton}"
+                        Text="&#128154;"
+                        FontSize="35"
+                        BorderColor="Green"/>
+                </StackLayout>
+            </StackLayout>
+            <Label x:Name="NoMatchLabel"
+                 IsVisible="False"
+                 HorizontalOptions="Center"
+                 VerticalOptions="Center"
+                 HorizontalTextAlignment="Center"
+                 Margin="50"
+                 Text="{x:Static resources:AppResources.NoMatch}"
+                 Style="{StaticResource NameLabel}" />
+            <StackLayout IsVisible="{Binding LookingForNewPeople}"
+                Margin="50"
+                Spacing="15"
+                VerticalOptions="Center"
+                 HorizontalOptions="Center">
+                <Label HorizontalTextAlignment="Center"
+                    Text="{x:Static resources:AppResources.LookingPeople}"
+                    Style="{StaticResource NameLabel}" />
+                <ActivityIndicator IsRunning="True"
+                               Color="White" />
+            </StackLayout>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
